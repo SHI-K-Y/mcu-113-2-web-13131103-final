@@ -13,6 +13,8 @@ export class ProductCardComponent {
 
   isDiscounted = true;
 
+  photoUrl = 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img';
+
   onSetDisplay(isDiscounted: boolean): void {
     this.isDiscounted = isDiscounted;
   }

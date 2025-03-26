@@ -10,4 +10,10 @@ export class ProductCardComponent {
   productName = 'A 產品';
   author = '作者 A、作者 B、作者 C';
   company = '博碩文化';
+
+  isDiscounted = true;
+
+  onSetDisplay(isDiscounted: boolean): void {
+    this.isDiscounted = isDiscounted;
+  }
 }

@@ -1,5 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { booleanAttribute, Component, Input, numberAttribute } from '@angular/core';
+import { booleanAttribute, Component, HostBinding, Input, numberAttribute } from '@angular/core';
 
 @Component({
   selector: 'app-product-card',
@@ -28,4 +28,7 @@ export class ProductCardComponent {
 
   @Input()
   photoUrl!: string;
+
+  @HostBinding('class')
+  class = 'app-product-card';
 }

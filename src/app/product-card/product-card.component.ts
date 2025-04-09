@@ -1,8 +1,9 @@
+import { CurrencyPipe } from '@angular/common';
 import { booleanAttribute, Component, Input, numberAttribute } from '@angular/core';
 
 @Component({
   selector: 'app-product-card',
-  imports: [],
+  imports: [CurrencyPipe],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
 })
@@ -22,10 +23,9 @@ export class ProductCardComponent {
   @Input({ transform: booleanAttribute })
   isDiscounted!: boolean;
 
+  @Input({ transform: numberAttribute })
+  price!: number;
+
   @Input()
   photoUrl!: string;
-
-  onSetDisplay(isDiscounted: boolean): void {
-    this.isDiscounted = isDiscounted;
-  }
 }

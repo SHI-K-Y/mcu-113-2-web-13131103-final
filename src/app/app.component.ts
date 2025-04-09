@@ -15,4 +15,6 @@ export class AppComponent {
   isDiscounted = true;
 
   photoUrl = 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img';
+
+  price = 1580;
 }

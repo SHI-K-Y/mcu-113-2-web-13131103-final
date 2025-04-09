@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-product-card',
@@ -7,13 +7,20 @@ import { Component } from '@angular/core';
   styleUrl: './product-card.component.scss',
 })
 export class ProductCardComponent {
-  productName = 'A 產品';
-  author = '作者 A、作者 B、作者 C';
-  company = '博碩文化';
+  @Input()
+  productName!: string;
 
-  isDiscounted = true;
+  @Input()
+  author!: string;
 
-  photoUrl = 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img';
+  @Input()
+  company!: string;
+
+  @Input()
+  isDiscounted!: boolean;
+
+  @Input()
+  photoUrl!: string;
 
   onSetDisplay(isDiscounted: boolean): void {
     this.isDiscounted = isDiscounted;

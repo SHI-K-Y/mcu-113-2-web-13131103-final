@@ -3,7 +3,6 @@ export class Product {
     if (!initDate) return;
     Object.assign(this, initDate);
   }
-  id!: number;
 
   name!: string;
 

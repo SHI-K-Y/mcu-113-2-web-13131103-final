@@ -8,9 +8,6 @@ import { booleanAttribute, Component, HostBinding, Input, numberAttribute } from
   styleUrl: './product-card.component.scss',
 })
 export class ProductCardComponent {
-  @Input({ required: true, transform: numberAttribute })
-  id!: number;
-
   @Input()
   productName!: string;
 

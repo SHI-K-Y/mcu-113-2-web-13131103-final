@@ -8,7 +8,7 @@ export class Product {
 
   company!: string;
 
-  authors!: string;
+  authors!: string[];
 
   isDiscounted!: boolean;
 

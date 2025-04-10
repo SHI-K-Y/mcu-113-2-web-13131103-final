@@ -2,7 +2,13 @@
 <div class="content">
   <strong [class.discounted]="isDiscounted">{{ productName }}</strong>
 </div>
-<div>{{ author }}</div>
+<div>
+  @for(author of authors; track $index) {
+  <span>{{ author }}</span>
+  @if(!$last){
+  <span>、</span>
+  } }
+</div>
 <div class="company">
   <span>{{ company }}</span>
   <span>{{ price | currency}}</span>

@@ -1,5 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, HostBinding, numberAttribute, input, model } from '@angular/core';
+import { Component, HostBinding, numberAttribute, input, booleanAttribute, output } from '@angular/core';
 
 @Component({
   selector: 'app-product-card',
@@ -14,11 +14,13 @@ export class ProductCardComponent {
 
   readonly company = input<string>();
 
-  readonly isDiscounted = model.required<boolean>();
+  readonly isDiscounted = input.required<boolean, string | boolean>({ transform: booleanAttribute });
 
   readonly price = input<number, string | number>(0, { transform: numberAttribute });
 
   readonly photoUrl = input<string>();
+
+  readonly view = output<void>();
 
   @HostBinding('class')
   class = 'app-product-card';

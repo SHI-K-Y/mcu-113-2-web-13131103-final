@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { Product } from '../models/product';
@@ -11,8 +11,7 @@ import { PaginationComponent } from '../pagination/pagination.component';
   styleUrl: './product-card-list.component.scss',
 })
 export class ProductCardListComponent {
-  @Input()
-  products!: Product[];
+  readonly products = input<Product[]>([]);
 
   pageIndex = 1;
 }

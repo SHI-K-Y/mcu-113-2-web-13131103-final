@@ -1,17 +1,17 @@
-<img [src]="photoUrl" />
+<img [src]="photoUrl()" />
 <div class="content">
-  <strong [class.discounted]="isDiscounted">{{ productName }}</strong>
+  <strong [class.discounted]="isDiscounted()">{{ productName() }}</strong>
 </div>
 <div>
-  @for(author of authors; track $index) {
+  @for(author of authors(); track $index) {
   <span>{{ author }}</span>
   @if(!$last){
   <span>、</span>
   } }
 </div>
 <div class="company">
-  <span>{{ company }}</span>
-  <span>{{ price | currency}}</span>
+  <span>{{ company() }}</span>
+  <span>{{ price() | currency}}</span>
 </div>
 <div class="button">
   <button type="button" class="details">明細</button>

@@ -1,4 +1,4 @@
-@for(product of products; track $index){
+@for(product of products(); track $index){
 <app-product-card
   [productName]="product.name"
   [authors]="product.authors"

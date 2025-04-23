@@ -20,6 +20,8 @@ export class ProductCardComponent {
 
   readonly photoUrl = input<string>();
 
+  readonly addToCart = output<void>();
+
   readonly view = output<void>();
 
   @HostBinding('class')

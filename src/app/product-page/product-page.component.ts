@@ -55,8 +55,12 @@ export class ProductPageComponent {
     }),
   ];
 
+  onAddToCart(product: Product): void {
+    this.router.navigate(['product', 'form', product.name]);
+  }
+
   onView(product: Product): void {
     console.log('onView', product);
-    this.router.navigate(['product', product.name]);
+    this.router.navigate(['product', 'view', product.name]);
   }
 }

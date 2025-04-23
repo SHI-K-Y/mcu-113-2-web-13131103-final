@@ -6,6 +6,7 @@
   [isDiscounted]="product.isDiscounted"
   [photoUrl]="product.photoUrl"
   [price]="product.price"
+  (addToCart)="addToCart.emit(product)"
   (view)="view.emit(product)"
 ></app-product-card>
 } @empty {

@@ -12,6 +12,8 @@ import { PaginationComponent } from '../pagination/pagination.component';
 export class ProductCardListComponent {
   readonly products = input<Product[]>([]);
 
+  readonly addToCart = output<Product>();
+
   readonly view = output<Product>();
 
   pageIndex = 1;

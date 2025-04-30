@@ -2,3 +2,21 @@
   display: block;
   padding: 20px;
 }
+
+section {
+  margin-bottom: 20px;
+  display: flex;
+
+  input {
+    margin-right: 10px;
+    padding: 10px;
+    text-align: left;
+  }
+
+  button {
+    border: #007bff solid 1px;
+    background-color: white;
+    color: #007bff;
+    cursor: pointer;
+  }
+}

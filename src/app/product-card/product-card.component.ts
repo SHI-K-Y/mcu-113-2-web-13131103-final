@@ -8,6 +8,8 @@ import { Component, HostBinding, numberAttribute, input, booleanAttribute, outpu
   styleUrl: './product-card.component.scss',
 })
 export class ProductCardComponent {
+  readonly id = input.required<number, string | number>({ transform: numberAttribute });
+
   readonly productName = input.required<string>();
 
   readonly authors = input<string[]>();

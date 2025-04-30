@@ -4,6 +4,8 @@ export class Product {
     Object.assign(this, initDate);
   }
 
+  id!: number;
+
   name!: string;
 
   company!: string;

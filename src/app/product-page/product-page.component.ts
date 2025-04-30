@@ -56,7 +56,7 @@ export class ProductPageComponent {
   ];
 
   onAddToCart(product: Product): void {
-    this.router.navigate(['product', 'form', product.name]);
+    this.router.navigate(['product', 'cart', product.name]);
   }
 
   onView(product: Product): void {

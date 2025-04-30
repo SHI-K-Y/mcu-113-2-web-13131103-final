@@ -13,12 +13,11 @@ import { ProductCardListComponent } from '../product-card-list/product-card-list
 export class ProductPageComponent implements OnInit {
   private router = inject(Router);
 
-  private ProductService!: ProductService;
+  private ProductService = inject(ProductService);
 
   products: Product[] = [];
 
   ngOnInit(): void {
-    this.ProductService = new ProductService();
     this.products = this.ProductService.getList();
   }
 

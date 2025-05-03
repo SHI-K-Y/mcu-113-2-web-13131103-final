@@ -29,6 +29,11 @@
         display: inline-block;
       }
 
+      .discount-label {
+        margin-left: 10px;
+        color: red;
+      }
+
       &.button {
         display: flex;
         justify-content: space-between;

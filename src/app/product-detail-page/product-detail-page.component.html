@@ -18,6 +18,9 @@
   <div>
     <strong>價格</strong>
     <span>{{ product.price | currency}}</span>
+    @if(product.isDiscounted){
+    <span class="discount-label">特價</span>
+    }
   </div>
   <div class="button">
     <button type="button" class="back" (click)="onBack()">返回</button>

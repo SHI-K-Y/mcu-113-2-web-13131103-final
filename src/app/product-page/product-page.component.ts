@@ -29,12 +29,11 @@ export class ProductPageComponent implements OnInit {
   }
 
   onAddToCart(product: Product): void {
-    this.router.navigate(['product', 'cart', product.name]);
+    this.router.navigate(['product', 'cart', product.id]);
   }
 
   onView(product: Product): void {
-    console.log('onView', product);
-    this.router.navigate(['product', 'view', product.name]);
+    this.router.navigate(['product', 'view', product.id]);
   }
 
   onPageIndexChange(pageIndex: number): void {

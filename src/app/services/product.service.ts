@@ -105,7 +105,9 @@ export class ProductService {
   getList(name: string | undefined, index: number, size: number): { data: Product[]; count: number } {
     const startIndex = (index - 1) * size;
     const endIndex = startIndex + size;
-    const data = name ? this._data.filter((item) => item.name === name) : [...this._data];
-    return { data: data.slice(startIndex, endIndex), count: this._data.length };
+
+    const filteredData = name ? this._data.filter((item) => item.name.includes(name)) : [...this._data];
+
+    return { data: filteredData.slice(startIndex, endIndex), count: filteredData.length };
   }
 }

@@ -1,12 +1,12 @@
 import { ProductService } from './../services/product.service';
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product } from '../models/product';
 import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, combineLatest, startWith, Subject, switchMap, tap } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-product-page',
@@ -19,38 +19,36 @@ export class ProductPageComponent {
 
   private ProductService = inject(ProductService);
 
-  private readonly pageIndex$ = new BehaviorSubject(1);
+  readonly pageIndex = signal(1);
 
-  get pageIndex() {
-    return this.pageIndex$.value;
-  }
-  set pageIndex(value: number) {
-    this.pageIndex$.next(value);
-  }
+  readonly pageSize = signal(5);
+
+  readonly searchNameSignal = signal<string | undefined>(undefined);
 
   private readonly refresh$ = new Subject<void>();
 
-  pageSize = 5;
-
-  private readonly data$ = combineLatest([
-    this.pageIndex$.pipe(tap((value) => console.log('page index', value))),
-    this.refresh$.pipe(
-      startWith(undefined),
-      tap(() => console.log('refresh'))
-    ),
-  ]).pipe(switchMap(() => this.ProductService.getList(undefined, this.pageIndex, this.pageSize)));
-
-  private readonly data = toSignal(this.data$, { initialValue: { data: [], count: 0 } });
+  private readonly data = rxResource({
+    request: () => ({
+      pageIndex: this.pageIndex(),
+      pageSize: this.pageSize(),
+      searchName: this.searchNameSignal(),
+    }),
+    defaultValue: { data: [], count: 0 },
+    loader: ({ request }) => {
+      const { pageIndex, pageSize, searchName } = request;
+      return this.ProductService.getList(searchName, pageIndex, pageSize);
+    },
+  });
 
   searchName: string | undefined;
 
   readonly totalCount = computed(() => {
-    const { count } = this.data();
+    const { count } = this.data.value();
     return count;
   });
 
   readonly products = computed(() => {
-    const { data } = this.data();
+    const { data } = this.data.value();
     return data;
   });
 
@@ -63,7 +61,8 @@ export class ProductPageComponent {
   }
 
   onSearch(): void {
-    this.pageIndex = 1;
+    this.searchNameSignal.set(this.searchName);
+    this.pageIndex.set(1);
     this.refresh$.next();
   }
 }

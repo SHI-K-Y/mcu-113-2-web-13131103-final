@@ -5,6 +5,7 @@ import { Product } from '../models/product';
 import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { FormsModule } from '@angular/forms';
+import { BehaviorSubject, combineLatest, startWith, Subject, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-product-page',
@@ -17,7 +18,15 @@ export class ProductPageComponent implements OnInit {
 
   private ProductService = inject(ProductService);
 
-  pageIndex = 1;
+  private readonly pageIndex$ = new BehaviorSubject(1);
+  get pageIndex() {
+    return this.pageIndex$.value;
+  }
+  set pageIndex(value: number) {
+    this.pageIndex$.next(value);
+  }
+
+  private readonly refresh$ = new Subject<void>();
 
   pageSize = 5;
 
@@ -28,7 +37,18 @@ export class ProductPageComponent implements OnInit {
   searchName: string | undefined;
 
   ngOnInit(): void {
-    this.getProducts();
+    combineLatest([
+      this.pageIndex$.pipe(tap((value) => console.log('page index', value))),
+      this.refresh$.pipe(
+        startWith(undefined),
+        tap(() => console.log('refresh'))
+      ),
+    ])
+      .pipe(switchMap(() => this.ProductService.getList(this.searchName, this.pageIndex, this.pageSize)))
+      .subscribe(({ data, count }) => {
+        this.products = data;
+        this.totalCount = count;
+      });
   }
 
   onAddToCart(product: Product): void {
@@ -39,20 +59,8 @@ export class ProductPageComponent implements OnInit {
     this.router.navigate(['product', 'view', product.id]);
   }
 
-  onPageIndexChange(pageIndex: number): void {
-    this.pageIndex = pageIndex;
-    this.getProducts();
-  }
-
   onSearch(): void {
     this.pageIndex = 1;
-    this.getProducts();
-  }
-
-  private getProducts(): void {
-    this.ProductService.getList(undefined, this.pageIndex, this.pageSize).subscribe(({ data, count }) => {
-      this.products = data;
-      this.totalCount = count;
-    });
+    this.refresh$.next();
   }
 }

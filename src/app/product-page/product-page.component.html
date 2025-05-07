@@ -3,9 +3,4 @@
   <button type="button" (click)="onSearch()">查詢</button>
 </section>
 <app-product-card-list [products]="products" (view)="onView($event)" (addToCart)="onAddToCart($event)"></app-product-card-list>
-<app-pagination
-  [pageIndex]="pageIndex"
-  [pageSize]="pageSize"
-  [totalCount]="totalCount"
-  (pageIndexChange)="onPageIndexChange($event)"
-></app-pagination>
+<app-pagination [(pageIndex)]="pageIndex" [pageSize]="pageSize" [totalCount]="totalCount"></app-pagination>

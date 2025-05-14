@@ -1,16 +1,16 @@
-import { ProductService } from './../services/product.service';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { Product } from '../models/product';
-import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
 import { PaginationComponent } from '../pagination/pagination.component';
-import { FormsModule } from '@angular/forms';
-import { BehaviorSubject, combineLatest, startWith, Subject, switchMap, tap } from 'rxjs';
-import { rxResource, toSignal } from '@angular/core/rxjs-interop';
+import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
+import { ProductService } from './../services/product.service';
 
 @Component({
   selector: 'app-product-page',
-  imports: [PaginationComponent, ProductCardListComponent, FormsModule],
+  imports: [ReactiveFormsModule, PaginationComponent, ProductCardListComponent],
   templateUrl: './product-page.component.html',
   styleUrl: './product-page.component.scss',
 })
@@ -19,11 +19,15 @@ export class ProductPageComponent {
 
   private ProductService = inject(ProductService);
 
+  private destroyRef = inject(DestroyRef);
+
+  readonly searchControl = new FormControl<string | undefined>(undefined, { nonNullable: true });
+
+  readonly productName = signal<string | undefined>(undefined);
+
   readonly pageIndex = signal(1);
 
   readonly pageSize = signal(5);
-
-  readonly searchNameSignal = signal<string | undefined>(undefined);
 
   private readonly refresh$ = new Subject<void>();
 
@@ -31,12 +35,12 @@ export class ProductPageComponent {
     request: () => ({
       pageIndex: this.pageIndex(),
       pageSize: this.pageSize(),
-      searchName: this.searchNameSignal(),
+      name: this.productName(),
     }),
     defaultValue: { data: [], count: 0 },
     loader: ({ request }) => {
-      const { pageIndex, pageSize, searchName } = request;
-      return this.ProductService.getList(searchName, pageIndex, pageSize);
+      const { pageIndex, pageSize, name } = request;
+      return this.ProductService.getList(name, pageIndex, pageSize);
     },
   });
 
@@ -61,7 +65,7 @@ export class ProductPageComponent {
   }
 
   onSearch(): void {
-    this.searchNameSignal.set(this.searchName);
+    this.productName.set(this.searchControl.value);
     this.pageIndex.set(1);
     this.refresh$.next();
   }

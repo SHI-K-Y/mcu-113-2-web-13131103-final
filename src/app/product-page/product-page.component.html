@@ -1,5 +1,5 @@
 <section>
-  <input type="text" placeholder="產品名稱查尋" [(ngModel)]="searchName" />
+  <input type="text" placeholder="產品名稱查尋" [formControl]="searchControl" />
   <button type="button" (click)="onSearch()">查詢</button>
 </section>
 <app-product-card-list [products]="products()" (view)="onView($event)" (addToCart)="onAddToCart($event)"></app-product-card-list>

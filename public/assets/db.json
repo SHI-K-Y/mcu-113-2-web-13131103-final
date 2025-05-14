@@ -22,7 +22,85 @@
         "作者 C"
       ],
       "company": "博碩文化",
+      "isDiscounted": false,
+      "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
+      "price": 1580
+    },
+    {
+      "id": 3,
+      "name": "C 產品",
+      "authors": [
+        "作者 A",
+        "作者 B",
+        "作者 C"
+      ],
+      "company": "博碩文化",
       "isDiscounted": true,
+      "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
+      "price": 1580
+    },
+    {
+      "id": 4,
+      "name": "D 產品",
+      "authors": [
+        "作者 A",
+        "作者 B",
+        "作者 C"
+      ],
+      "company": "博碩文化",
+      "isDiscounted": false,
+      "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
+      "price": 1580
+    },
+    {
+      "id": 5,
+      "name": "E 產品",
+      "authors": [
+        "作者 A",
+        "作者 B",
+        "作者 C"
+      ],
+      "company": "博碩文化",
+      "isDiscounted": true,
+      "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
+      "price": 1580
+    },
+    {
+      "id": 6,
+      "name": "F 產品",
+      "authors": [
+        "作者 A",
+        "作者 B",
+        "作者 C"
+      ],
+      "company": "博碩文化",
+      "isDiscounted": false,
+      "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
+      "price": 1580
+    },
+    {
+      "id": 7,
+      "name": "G 產品",
+      "authors": [
+        "作者 A",
+        "作者 B",
+        "作者 C"
+      ],
+      "company": "博碩文化",
+      "isDiscounted": true,
+      "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
+      "price": 1580
+    },
+    {
+      "id": 8,
+      "name": "H 產品",
+      "authors": [
+        "作者 A",
+        "作者 B",
+        "作者 C"
+      ],
+      "company": "博碩文化",
+      "isDiscounted": false,
       "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
       "price": 1580
     }

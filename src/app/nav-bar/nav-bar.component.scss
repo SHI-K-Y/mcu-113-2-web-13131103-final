@@ -11,7 +11,7 @@
 
     &:hover,
     &:active,
-    &:force {
+    &:focus {
       text-decoration: none;
     }
 
@@ -19,7 +19,7 @@
       background-color: #005ccb33;
     }
 
-    &:active {
+    &.active {
       background-color: #005ccb1a;
     }
   }

@@ -1,23 +1,29 @@
-<div class="container">
+<div class="container" [formGroup]="form">
   <h3>基本資料</h3>
   <div class="basic-info">
     <div class="form-item">
       <div class="form-column">
         <label>姓名</label>
-        <input type="text" />
+        <input type="text" formControlName="name" />
       </div>
+      <div class="error-message">@if(name.hasError('required')){ 請輸入姓名 }</div>
     </div>
     <div class="form-item">
       <div class="form-column">
         <label>地址</label>
-        <input type="text" />
+        <input type="text" formControlName="address" />
       </div>
+      <div class="error-message">@if(address.hasError('required')){ 請輸入地址 }</div>
     </div>
     <div class="form-item">
       <div class="form-column">
         <label>電話</label>
-        <input type="tel" />
+        <input type="tel" formControlName="tel" />
       </div>
+      <div class="error-message">@if(tel.hasError('required')){ 請輸入電話 }</div>
     </div>
+  </div>
+  <div class="summit">
+    <button type="button" [disabled]="form.invalid">送出訂單</button>
   </div>
 </div>

@@ -107,23 +107,9 @@
   ],
   "cartItems": [
     {
-      "id": "9697",
-      "productId": "4",
-      "productName": "D 產品",
-      "price": 1580,
-      "quantity": 2
-    },
-    {
-      "id": "b044",
-      "productId": "3",
-      "productName": "C 產品",
-      "price": 1580,
-      "quantity": 2
-    },
-    {
-      "id": "9155",
-      "productId": "5",
-      "productName": "E 產品",
+      "id": "db7f",
+      "productId": "2",
+      "productName": "B 產品",
       "price": 1580,
       "quantity": 1
     }

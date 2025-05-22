@@ -34,22 +34,19 @@
           <tbody>
             @for (item of items.controls; track $index; let i = $index) {
             <tr [formGroupName]="i">
-              <td>{{ i + 1 }}</td>
-              <td>{{ item.get('productName')?.value }}</td>
-              <td>
+              <td class="id">{{ i + 1 }}</td>
+              <td class="name">{{ item.get('productName')?.value }}</td>
+              <td class="count">
                 <input type="number" formControlName="quantity" min="1" />
               </td>
-              <td>{{ getSubtotal(i) | currency }}</td>
-              <td>
+              <td class="price">{{ getSubtotal(i) | currency }}</td>
+              <td class="remove">
                 <button type="button" (click)="removeItem(i)">刪除</button>
               </td>
             </tr>
             }
           </tbody>
         </table>
-        <div class="total-summary">
-          <strong>總計: {{ getTotal() | currency }}</strong>
-        </div>
       </div>
       } @else {
       <div class="cart-items">購物車內沒有商品</div>

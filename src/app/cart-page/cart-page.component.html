@@ -54,6 +54,8 @@
     </div>
   </div>
   <div class="summit">
-    <button type="button" [disabled]="form.invalid || items.controls.length === 0">送出訂單</button>
+    <button type="button" [disabled]="form.invalid || items.controls.length === 0" (click)="onSubmit()">
+      送出訂單 (${{ getTotal().toFixed(2) }})
+    </button>
   </div>
 </div>

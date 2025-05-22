@@ -1,7 +1,7 @@
 {
   "products": [
     {
-      "id": 1,
+      "id": "1",
       "name": "A 產品",
       "authors": [
         "作者 A",
@@ -14,7 +14,7 @@
       "price": 1580
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "B 產品",
       "authors": [
         "作者 A",
@@ -27,7 +27,7 @@
       "price": 1580
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "C 產品",
       "authors": [
         "作者 A",
@@ -40,7 +40,7 @@
       "price": 1580
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "D 產品",
       "authors": [
         "作者 A",
@@ -53,7 +53,7 @@
       "price": 1580
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "E 產品",
       "authors": [
         "作者 A",
@@ -66,7 +66,7 @@
       "price": 1580
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "F 產品",
       "authors": [
         "作者 A",
@@ -79,7 +79,7 @@
       "price": 1580
     },
     {
-      "id": 7,
+      "id": "7",
       "name": "G 產品",
       "authors": [
         "作者 A",
@@ -92,7 +92,7 @@
       "price": 1580
     },
     {
-      "id": 8,
+      "id": "8",
       "name": "H 產品",
       "authors": [
         "作者 A",
@@ -107,9 +107,23 @@
   ],
   "cartItems": [
     {
-      "id": "4b15",
-      "productId": 3,
+      "id": "9697",
+      "productId": "4",
+      "productName": "D 產品",
+      "price": 1580,
+      "quantity": 2
+    },
+    {
+      "id": "b044",
+      "productId": "3",
       "productName": "C 產品",
+      "price": 1580,
+      "quantity": 2
+    },
+    {
+      "id": "9155",
+      "productId": "5",
+      "productName": "E 產品",
       "price": 1580,
       "quantity": 1
     }

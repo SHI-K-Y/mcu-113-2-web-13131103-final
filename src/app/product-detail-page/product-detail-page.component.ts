@@ -2,7 +2,6 @@ import { CurrencyPipe } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product } from '../models/product';
-import { ProductService } from './../services/product.service';
 
 @Component({
   selector: 'app-product-detail-page',
@@ -15,13 +14,11 @@ export class ProductDetailPageComponent {
 
   readonly router = inject(Router);
 
-  readonly productService = inject(ProductService);
-
   onBack(): void {
     this.router.navigate(['products']);
   }
 
   onAddToCart(): void {
-    this.router.navigate(['cart']);
+    this.router.navigate(['cart'], { state: { product: this.product() } });
   }
 }

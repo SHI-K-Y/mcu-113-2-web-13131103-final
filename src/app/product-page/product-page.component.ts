@@ -7,6 +7,7 @@ import { Product } from '../models/product';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
 import { ProductService } from './../services/product.service';
+import { ProductRemoteService } from './../services/product-remote.service'; // Import ProductRemoteService
 
 @Component({
   selector: 'app-product-page',
@@ -17,7 +18,8 @@ import { ProductService } from './../services/product.service';
 export class ProductPageComponent {
   private router = inject(Router);
 
-  private ProductService = inject(ProductService);
+  // Ensure ProductService is provided as ProductRemoteService in DI config
+  private productService = inject(ProductService); // Corrected casing: ProductService -> productService
 
   private destroyRef = inject(DestroyRef);
 
@@ -37,27 +39,36 @@ export class ProductPageComponent {
       pageSize: this.pageSize(),
       name: this.productName(),
     }),
-    defaultValue: { data: [], count: 0 },
+    defaultValue: { data: [], count: 0 } as { data: Product[]; count: number }, // Added type assertion for defaultValue
     loader: ({ request }) => {
       const { pageIndex, pageSize, name } = request;
-      return this.ProductService.getList(name, pageIndex, pageSize);
+      return this.productService.getList(name, pageIndex, pageSize); // Corrected casing: ProductService -> productService
     },
   });
 
   searchName: string | undefined;
 
   readonly totalCount = computed(() => {
-    const { count } = this.data.value();
-    return count;
+    const value = this.data.value() as { data: Product[]; count: number }; // Added type assertion
+    return value.count;
   });
 
   readonly products = computed(() => {
-    const { data } = this.data.value();
-    return data;
+    const value = this.data.value() as { data: Product[]; count: number }; // Added type assertion
+    return value.data;
   });
 
   onAddToCart(product: Product): void {
-    this.router.navigate(['cart']);
+    (this.productService as ProductRemoteService).addItemToCartServer(product).subscribe({
+      next: (cartItem) => {
+        console.log('Item added/updated in server cart:', cartItem);
+        this.router.navigate(['cart']);
+      },
+      error: (err) => {
+        console.error('Failed to add item to server cart:', err);
+        alert('Failed to add item to cart. Please try again.');
+      },
+    });
   }
 
   onView(product: Product): void {

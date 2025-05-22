@@ -104,5 +104,15 @@
       "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
       "price": 1580
     }
-  ]
+  ],
+  "cartItems": [
+    {
+      "id": "4b15",
+      "productId": 3,
+      "productName": "C 產品",
+      "price": 1580,
+      "quantity": 1
+    }
+  ],
+  "orders": []
 }

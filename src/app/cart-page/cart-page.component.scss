@@ -26,7 +26,6 @@
       .basic-info {
         padding: 15px;
         border: 1px solid #ccc;
-
         .form-item {
           display: flex;
           align-items: center;
@@ -58,11 +57,16 @@
           .error-message {
             color: #dc3545;
             font-size: 14px;
-            flex-shrink: 0;
+            text-align: center;
+            min-width: 120px;
+            min-height: 20px;
+            align-items: center;
           }
         }
       }
-    } // 右邊：購買項目區
+    }
+
+    // 右邊：購買項目區
     .cart-section {
       flex: 1;
 

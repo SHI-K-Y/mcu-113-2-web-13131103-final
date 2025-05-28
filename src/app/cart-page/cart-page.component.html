@@ -43,7 +43,7 @@
                   class="quantity-field"
                 />
               </div>
-              <div class="item-subtotal">{{ getCartItemFormGroup(i).get('totalPrice')?.value | currency:'TWD':'symbol':'1.0-0' }}</div>
+              <div class="item-subtotal">{{ getCartItemFormGroup(i).get('totalPrice')?.value | currency }}</div>
               <div class="remove-action">
                 <button type="button" class="remove-btn" (click)="removeItem(cartItem.product.id)">刪除</button>
               </div>
@@ -57,7 +57,7 @@
 
     <div class="submit-section">
       <button type="button" (click)="submitOrder()" [disabled]="form.invalid || cartService.cartItems().length === 0" class="submit-btn">
-        送出訂單({{ totalAmount() | currency:'TWD':'symbol':'1.0-0' }})
+        送出訂單({{ totalAmount() | currency }})
       </button>
     </div>
   </div>

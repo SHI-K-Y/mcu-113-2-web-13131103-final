@@ -9,7 +9,6 @@ export class CartService {
   private _cartItems = signal<CartItem[]>([]);
 
   readonly cartItems = this._cartItems.asReadonly();
-
   addToCart(product: Product, quantity: number = 1): void {
     const existingItemIndex = this._cartItems().findIndex((item) => item.product.id === product.id);
 

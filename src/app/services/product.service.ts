@@ -15,6 +15,7 @@ export class ProductService {
       isDiscounted: true,
       photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
       price: 1580,
+      isShow: true,
     }),
     new Product({
       id: 2,
@@ -24,6 +25,7 @@ export class ProductService {
       isDiscounted: false,
       photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
       price: 1580,
+      isShow: false,
     }),
     new Product({
       id: 3,
@@ -33,6 +35,7 @@ export class ProductService {
       isDiscounted: true,
       photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
       price: 1580,
+      isShow: true,
     }),
     new Product({
       id: 4,
@@ -42,6 +45,7 @@ export class ProductService {
       isDiscounted: false,
       photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
       price: 1580,
+      isShow: true,
     }),
     new Product({
       id: 5,
@@ -51,6 +55,7 @@ export class ProductService {
       isDiscounted: true,
       photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
       price: 1580,
+      isShow: false,
     }),
     new Product({
       id: 6,
@@ -60,6 +65,7 @@ export class ProductService {
       isDiscounted: true,
       photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
       price: 1580,
+      isShow: true,
     }),
     new Product({
       id: 7,
@@ -69,6 +75,7 @@ export class ProductService {
       isDiscounted: false,
       photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
       price: 1580,
+      isShow: true,
     }),
     new Product({
       id: 8,
@@ -78,6 +85,7 @@ export class ProductService {
       isDiscounted: true,
       photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
       price: 1580,
+      isShow: true,
     }),
     new Product({
       id: 9,
@@ -87,6 +95,7 @@ export class ProductService {
       isDiscounted: false,
       photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
       price: 1580,
+      isShow: true,
     }),
     new Product({
       id: 10,
@@ -96,20 +105,25 @@ export class ProductService {
       isDiscounted: true,
       photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
       price: 1580,
+      isShow: true,
     }),
   ];
-
   getById(productId: number): Observable<Product> {
     return of(this._data).pipe(
-      mergeMap((data) => data),
-      filter(({ id }) => id === productId)
+      map((data) => {
+        const product = data.find((p) => p.id === productId);
+        if (!product || !product.isShow) {
+          throw new Error('Product not found or not available');
+        }
+        return product;
+      })
     );
   }
 
   getList(name: string | undefined, index: number, size: number): Observable<{ data: Product[]; count: number }> {
     return of(this._data).pipe(
       mergeMap((data) => data),
-      filter((item) => (name ? item.name === name : true)),
+      filter((item) => item.isShow && (name ? item.name === name : true)),
       toArray(),
       map((data) => {
         const startIndex = (index - 1) * size;

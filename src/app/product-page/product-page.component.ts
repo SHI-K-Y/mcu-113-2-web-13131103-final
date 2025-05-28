@@ -61,9 +61,8 @@ export class ProductPageComponent {
   onAddToCart(product: Product): void {
     this.cartService.addToCart(product);
   }
-
   onView(product: Product): void {
-    this.router.navigate(['product', 'view', product.id]);
+    this.router.navigate(['products', 'view', product.id]);
   }
 
   onSearch(): void {

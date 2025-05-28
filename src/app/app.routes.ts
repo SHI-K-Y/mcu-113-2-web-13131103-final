@@ -7,6 +7,6 @@ import { productResolver } from './resolver/product.resolver';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'products' },
   { path: 'products', component: ProductPageComponent },
-  { path: 'product/view/:id', component: ProductDetailPageComponent, resolve: { product: productResolver } },
+  { path: 'products/view/:id', component: ProductDetailPageComponent, resolve: { product: productResolver } },
   { path: 'cart', component: CartPageComponent },
 ];

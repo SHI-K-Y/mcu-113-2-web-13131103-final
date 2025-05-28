@@ -1,5 +1,5 @@
 import { CurrencyPipe, JsonPipe } from '@angular/common';
-import { Component, inject, OnInit, effect } from '@angular/core';
+import { Component, inject, OnInit, effect, computed } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../services/cart.service';
@@ -16,6 +16,16 @@ export class CartPageComponent implements OnInit {
   private readonly router = inject(Router);
   readonly cartService = inject(CartService);
 
+  readonly totalAmount = computed(() => {
+    return this.cartService.cartItems().reduce((total, item) => {
+      return total + item.product.price * item.quantity;
+    }, 0);
+  });
+
+  readonly itemSubtotals = computed(() => {
+    return this.cartService.cartItems().map((item) => item.product.price * item.quantity);
+  });
+
   form = new FormGroup({
     name: new FormControl<string | null>(null, { validators: [Validators.required] }),
     address: new FormControl<string | null>(null, { validators: [Validators.required] }),
@@ -24,9 +34,7 @@ export class CartPageComponent implements OnInit {
   });
 
   constructor() {
-    // 監聽購物車變化，同步表單
     effect(() => {
-      // 只有當購物車項目數量發生變化時才重建表單
       const cartItemsLength = this.cartService.cartItems().length;
       if (this.cartItemsFormArray.length !== cartItemsLength) {
         this.syncCartItemsToForm();

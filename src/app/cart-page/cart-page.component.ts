@@ -1,9 +1,8 @@
-import { CurrencyPipe, JsonPipe } from '@angular/common';
-import { Component, inject, OnInit, effect, computed } from '@angular/core';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
+import { Component, inject, computed } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CartService } from '../services/cart.service';
-import { CartItem } from '../models/cart-item';
 
 @Component({
   selector: 'app-cart-page',
@@ -11,43 +10,20 @@ import { CartItem } from '../models/cart-item';
   templateUrl: './cart-page.component.html',
   styleUrl: './cart-page.component.scss',
 })
-export class CartPageComponent implements OnInit {
-  private readonly route = inject(ActivatedRoute);
-
+export class CartPageComponent {
   private readonly router = inject(Router);
 
   readonly cartService = inject(CartService);
 
   readonly totalAmount = computed(() => {
-    return this.cartService.cartItems().reduce((total, item) => {
-      return total + item.product.price * item.quantity;
-    }, 0);
-  });
-
-  readonly itemSubtotals = computed(() => {
-    return this.cartService.cartItems().map((item) => item.product.price * item.quantity);
+    return this.cartService.getTotalAmount();
   });
 
   form = new FormGroup({
     name: new FormControl<string | null>(null, { validators: [Validators.required] }),
     address: new FormControl<string | null>(null, { validators: [Validators.required] }),
     tel: new FormControl<string | null>(null, { validators: [Validators.required] }),
-    cartItems: new FormArray<FormGroup>([]),
   });
-
-  constructor() {
-    effect(() => {
-      const cartItemsLength = this.cartService.cartItems().length;
-      if (this.cartItemsFormArray.length !== cartItemsLength) {
-        this.syncCartItemsToForm();
-      }
-    });
-  }
-
-  ngOnInit(): void {
-    this.syncCartItemsToForm();
-  }
-
   get name(): FormControl<string | null> {
     return this.form.get('name') as FormControl<string | null>;
   }
@@ -60,81 +36,14 @@ export class CartPageComponent implements OnInit {
     return this.form.get('tel') as FormControl<string | null>;
   }
 
-  get cartItemsFormArray(): FormArray<FormGroup> {
-    return this.form.get('cartItems') as FormArray<FormGroup>;
-  }
-  private syncCartItemsToForm(): void {
-    const cartItems = this.cartService.cartItems();
-    const currentFormArray = this.cartItemsFormArray;
-
-    if (currentFormArray.length === cartItems.length) {
-      cartItems.forEach((item, index) => {
-        const formGroup = currentFormArray.at(index);
-        formGroup.get('productId')?.setValue(item.product.id);
-        formGroup.get('productName')?.setValue(item.product.name);
-        formGroup.get('price')?.setValue(item.product.price);
-        const currentFormQuantity = formGroup.get('quantity')?.value;
-        if (currentFormQuantity && currentFormQuantity !== item.quantity) {
-          formGroup.get('quantity')?.setValue(item.quantity);
-        } else if (!currentFormQuantity) {
-          formGroup.get('quantity')?.setValue(item.quantity);
-        }
-      });
-    } else {
-      while (currentFormArray.length !== 0) {
-        currentFormArray.removeAt(0);
-      }
-
-      cartItems.forEach((item) => {
-        const itemFormGroup = new FormGroup({
-          productId: new FormControl(item.product.id),
-          productName: new FormControl(item.product.name),
-          price: new FormControl(item.product.price),
-          quantity: new FormControl(item.quantity),
-        });
-        currentFormArray.push(itemFormGroup);
-      });
-    }
-  }
-  updateQuantity(index: number): void {
-    const formGroup = this.cartItemsFormArray.at(index);
-    const productId = formGroup.get('productId')?.value;
-    const quantity = formGroup.get('quantity')?.value;
-
-    if (productId && quantity && quantity > 0) {
+  updateQuantity(productId: number, quantity: number): void {
+    if (quantity > 0) {
       this.cartService.updateQuantity(productId, quantity);
     }
   }
-  onQuantityBlur(index: number): void {
-    const formGroup = this.cartItemsFormArray.at(index);
-    const productId = formGroup.get('productId')?.value;
-    const quantity = formGroup.get('quantity')?.value;
 
-    if (productId && (!quantity || quantity <= 0)) {
-      this.cartService.updateQuantity(productId, 1);
-    }
-  }
-
-  onQuantityFocus(index: number): void {
-    const formGroup = this.cartItemsFormArray.at(index);
-    const quantity = formGroup.get('quantity')?.value;
-    const productId = formGroup.get('productId')?.value;
-
-    if ((!quantity || quantity <= 0) && productId) {
-      const cartItem = this.cartService.cartItems().find((item) => item.product.id === productId);
-      if (cartItem) {
-        formGroup.get('quantity')?.setValue(cartItem.quantity);
-      }
-    }
-  }
-
-  removeItem(index: number): void {
-    const formGroup = this.cartItemsFormArray.at(index);
-    const productId = formGroup.get('productId')?.value;
-
-    if (productId) {
-      this.cartService.removeFromCart(productId);
-    }
+  removeItem(productId: number): void {
+    this.cartService.removeFromCart(productId);
   }
 
   submitOrder(): void {

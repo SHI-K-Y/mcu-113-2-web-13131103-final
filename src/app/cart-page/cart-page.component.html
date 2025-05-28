@@ -29,30 +29,23 @@
             <p>購物車是空的</p>
           </div>
           } @else {
-          <div class="cart-list" formArrayName="cartItems">
-            @for (itemForm of cartItemsFormArray.controls; track $index; let i = $index) {
-            <div class="cart-item-row" [formGroupName]="i">
+          <div class="cart-list">
+            @for (cartItem of cartService.cartItems(); track cartItem.product.id; let i = $index) {
+            <div class="cart-item-row">
               <div class="item-number">{{ i + 1 }}</div>
-              <div class="product-name">
-                <input type="hidden" formControlName="productId" />
-                <input type="hidden" formControlName="productName" />
-                <input type="hidden" formControlName="price" />
-                {{ itemForm.get('productName')?.value }}
-              </div>
+              <div class="product-name">{{ cartItem.product.name }}</div>
               <div class="quantity-input">
                 <input
                   type="number"
-                  formControlName="quantity"
-                  (input)="updateQuantity(i)"
-                  (focus)="onQuantityFocus(i)"
-                  (blur)="onQuantityBlur(i)"
+                  [value]="cartItem.quantity"
+                  (input)="updateQuantity(cartItem.product.id, +$any($event.target).value)"
                   min="1"
                   class="quantity-field"
                 />
               </div>
-              <div class="item-subtotal">{{ itemSubtotals()[$index] | currency:'TWD':'symbol':'1.0-0' }}</div>
+              <div class="item-subtotal">{{ cartItem.totalPrice | currency:'TWD':'symbol':'1.0-0' }}</div>
               <div class="remove-action">
-                <button type="button" class="remove-btn" (click)="removeItem(i)">刪除</button>
+                <button type="button" class="remove-btn" (click)="removeItem(cartItem.product.id)">刪除</button>
               </div>
             </div>
             }

@@ -1,6 +1,7 @@
 <a [routerLink]="['products']" routerLinkActive="active">產品清單</a>
-<a [routerLink]="['cart']" routerLinkActive="active">
-  購物車 @if (cartService.getTotalItemCount() > 0) {
+<a [routerLink]="['cart']" routerLinkActive="active" class="cart-link">
+  <span>購物車</span>
+  @if (cartService.getTotalItemCount() > 0) {
   <span class="cart-badge">{{ cartService.getTotalItemCount() }}</span>
   }
 </a>

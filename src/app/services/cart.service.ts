@@ -9,9 +9,11 @@ export class CartService {
   private _cartItems = signal<CartItem[]>([]);
 
   readonly cartItems = this._cartItems.asReadonly();
+
   addToCart(product: Product, quantity: number = 1): void {
     const existingItemIndex = this._cartItems().findIndex((item) => item.product.id === product.id);
 
+    // 判斷商品是否已存在購物車中
     if (existingItemIndex !== -1) {
       const updatedItems = [...this._cartItems()];
       updatedItems[existingItemIndex] = new CartItem({
@@ -29,6 +31,7 @@ export class CartService {
     const updatedItems = this._cartItems().filter((item) => item.product.id !== productId);
     this._cartItems.set(updatedItems);
   }
+
   updateQuantity(productId: number, quantity: number): void {
     const updatedItems = this._cartItems().map((item) => (item.product.id === productId ? new CartItem({ ...item, quantity }) : item));
     this._cartItems.set(updatedItems);
@@ -37,6 +40,7 @@ export class CartService {
   clearCart(): void {
     this._cartItems.set([]);
   }
+
   getTotalAmount(): number {
     return this._cartItems().reduce((total, item) => total + item.totalPrice, 0);
   }

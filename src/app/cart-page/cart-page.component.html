@@ -29,21 +29,21 @@
             <p>購物車是空的</p>
           </div>
           } @else {
-          <div class="cart-list">
+          <div class="cart-list" formArrayName="cartItems">
             @for (cartItem of cartService.cartItems(); track cartItem.product.id; let i = $index) {
-            <div class="cart-item-row">
+            <div class="cart-item-row" [formGroupName]="i">
               <div class="item-number">{{ i + 1 }}</div>
-              <div class="product-name">{{ cartItem.product.name }}</div>
+              <div class="product-name">{{ getCartItemFormGroup(i).get('productName')?.value }}</div>
               <div class="quantity-input">
                 <input
                   type="number"
-                  [value]="cartItem.quantity"
-                  (input)="updateQuantity(cartItem.product.id, +$any($event.target).value)"
+                  formControlName="quantity"
+                  (input)="updateQuantity(cartItem.product.id, $event)"
                   min="1"
                   class="quantity-field"
                 />
               </div>
-              <div class="item-subtotal">{{ cartItem.totalPrice | currency:'TWD':'symbol':'1.0-0' }}</div>
+              <div class="item-subtotal">{{ getCartItemFormGroup(i).get('totalPrice')?.value | currency:'TWD':'symbol':'1.0-0' }}</div>
               <div class="remove-action">
                 <button type="button" class="remove-btn" (click)="removeItem(cartItem.product.id)">刪除</button>
               </div>
@@ -54,6 +54,7 @@
         </div>
       </div>
     </div>
+
     <div class="submit-section">
       <button type="button" (click)="submitOrder()" [disabled]="form.invalid || cartService.cartItems().length === 0" class="submit-btn">
         送出訂單({{ totalAmount() | currency:'TWD':'symbol':'1.0-0' }})

@@ -40,7 +40,15 @@
                 {{ itemForm.get('productName')?.value }}
               </div>
               <div class="quantity-input">
-                <input type="number" formControlName="quantity" (input)="updateQuantity(i)" min="1" class="quantity-field" />
+                <input
+                  type="number"
+                  formControlName="quantity"
+                  (input)="updateQuantity(i)"
+                  (focus)="onQuantityFocus(i)"
+                  (blur)="onQuantityBlur(i)"
+                  min="1"
+                  class="quantity-field"
+                />
               </div>
               <div class="item-subtotal">{{ itemSubtotals()[$index] | currency:'TWD':'symbol':'1.0-0' }}</div>
               <div class="remove-action">

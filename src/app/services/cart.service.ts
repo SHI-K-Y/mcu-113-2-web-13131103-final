@@ -30,13 +30,7 @@ export class CartService {
     const updatedItems = this._cartItems().filter((item) => item.product.id !== productId);
     this._cartItems.set(updatedItems);
   }
-
   updateQuantity(productId: number, quantity: number): void {
-    if (quantity <= 0) {
-      this.removeFromCart(productId);
-      return;
-    }
-
     const updatedItems = this._cartItems().map((item) => (item.product.id === productId ? new CartItem({ ...item, quantity }) : item));
     this._cartItems.set(updatedItems);
   }
@@ -44,12 +38,7 @@ export class CartService {
   clearCart(): void {
     this._cartItems.set([]);
   }
-
   getTotalAmount(): number {
     return this._cartItems().reduce((total, item) => total + item.totalPrice, 0);
-  }
-
-  getTotalItemCount(): number {
-    return this._cartItems().reduce((total, item) => total + item.quantity, 0);
   }
 }

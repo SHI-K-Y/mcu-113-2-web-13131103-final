@@ -13,7 +13,9 @@ import { CartItem } from '../models/cart-item';
 })
 export class CartPageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
+
   private readonly router = inject(Router);
+
   readonly cartService = inject(CartService);
 
   readonly totalAmount = computed(() => {
@@ -61,7 +63,6 @@ export class CartPageComponent implements OnInit {
   get cartItemsFormArray(): FormArray<FormGroup> {
     return this.form.get('cartItems') as FormArray<FormGroup>;
   }
-
   private syncCartItemsToForm(): void {
     const cartItems = this.cartService.cartItems();
     const currentFormArray = this.cartItemsFormArray;
@@ -73,7 +74,9 @@ export class CartPageComponent implements OnInit {
         formGroup.get('productName')?.setValue(item.product.name);
         formGroup.get('price')?.setValue(item.product.price);
         const currentFormQuantity = formGroup.get('quantity')?.value;
-        if (currentFormQuantity !== item.quantity) {
+        if (currentFormQuantity && currentFormQuantity !== item.quantity) {
+          formGroup.get('quantity')?.setValue(item.quantity);
+        } else if (!currentFormQuantity) {
           formGroup.get('quantity')?.setValue(item.quantity);
         }
       });
@@ -93,7 +96,6 @@ export class CartPageComponent implements OnInit {
       });
     }
   }
-
   updateQuantity(index: number): void {
     const formGroup = this.cartItemsFormArray.at(index);
     const productId = formGroup.get('productId')?.value;
@@ -101,9 +103,28 @@ export class CartPageComponent implements OnInit {
 
     if (productId && quantity && quantity > 0) {
       this.cartService.updateQuantity(productId, quantity);
-    } else if (productId && (!quantity || quantity <= 0)) {
-      formGroup.get('quantity')?.setValue(1);
+    }
+  }
+  onQuantityBlur(index: number): void {
+    const formGroup = this.cartItemsFormArray.at(index);
+    const productId = formGroup.get('productId')?.value;
+    const quantity = formGroup.get('quantity')?.value;
+
+    if (productId && (!quantity || quantity <= 0)) {
       this.cartService.updateQuantity(productId, 1);
+    }
+  }
+
+  onQuantityFocus(index: number): void {
+    const formGroup = this.cartItemsFormArray.at(index);
+    const quantity = formGroup.get('quantity')?.value;
+    const productId = formGroup.get('productId')?.value;
+
+    if ((!quantity || quantity <= 0) && productId) {
+      const cartItem = this.cartService.cartItems().find((item) => item.product.id === productId);
+      if (cartItem) {
+        formGroup.get('quantity')?.setValue(cartItem.quantity);
+      }
     }
   }
 

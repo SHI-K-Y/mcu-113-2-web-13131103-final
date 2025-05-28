@@ -114,15 +114,13 @@
               font-size: 18px;
               color: #333;
             }
-
             .quantity-input {
-              width: 80px;
+              width: 140px;
 
               .quantity-field {
                 width: 100%;
                 padding: 8px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
+                border: 1px solid #ccc;
                 text-align: center;
 
                 &:focus {
@@ -138,7 +136,7 @@
 
             .item-subtotal {
               width: 120px;
-              text-align: right;
+              text-align: center;
               font-size: 16px;
               font-weight: 600;
             }
@@ -147,8 +145,8 @@
               .remove-btn {
                 background-color: white;
                 color: red;
-                border: 2px solid red;
-                padding: 6px 12px;
+                border: 1px solid red;
+                padding: 5px 10px;
                 cursor: pointer;
                 font-size: 14px;
               }

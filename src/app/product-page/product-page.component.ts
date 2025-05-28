@@ -7,6 +7,7 @@ import { Product } from '../models/product';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
 import { ProductService } from './../services/product.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-product-page',
@@ -18,6 +19,8 @@ export class ProductPageComponent {
   private router = inject(Router);
 
   private ProductService = inject(ProductService);
+
+  private cartService = inject(CartService);
 
   private destroyRef = inject(DestroyRef);
 
@@ -55,8 +58,9 @@ export class ProductPageComponent {
     const { data } = this.data.value();
     return data;
   });
-
   onAddToCart(product: Product): void {
+    this.cartService.addToCart(product);
+
     this.router.navigate(['cart']);
   }
 

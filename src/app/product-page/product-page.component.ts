@@ -60,8 +60,6 @@ export class ProductPageComponent {
   });
   onAddToCart(product: Product): void {
     this.cartService.addToCart(product);
-
-    this.router.navigate(['cart']);
   }
 
   onView(product: Product): void {

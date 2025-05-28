@@ -1,68 +1,63 @@
 <div class="container">
-  <!-- 購物車商品列表 -->
-  <div class="cart-section">
-    <h3>購物車</h3>
-    <div class="cart-items">
-      @if (cartService.cartItems().length === 0) {
-      <div class="empty-cart">
-        <p>購物車是空的</p>
-      </div>
-      } @else { @for (item of cartService.cartItems(); track item.product.id) {
-      <div class="cart-item">
-        <div class="item-info">
-          <img [src]="item.product.photoUrl" [alt]="item.product.name" class="product-image" />
-          <div class="product-details">
-            <h4>{{ item.product.name }}</h4>
-            <p class="price">{{ item.product.price | currency:'TWD':'symbol':'1.0-0' }}</p>
+  <div [formGroup]="form">
+    <div class="main-content">
+      <div class="order-form">
+        <h3>基本資料</h3>
+        <div class="basic-info">
+          <div class="form-item">
+            <label>姓名</label>
+            <input type="text" formControlName="name" />
+            <div class="error-message">@if(name.hasError('required')){ 請輸入姓名 }</div>
+          </div>
+          <div class="form-item">
+            <label>地址</label>
+            <input type="text" formControlName="address" />
+            <div class="error-message">@if(address.hasError('required')){ 請輸入地址 }</div>
+          </div>
+          <div class="form-item">
+            <label>電話</label>
+            <input type="tel" formControlName="tel" />
+            <div class="error-message">@if(tel.hasError('required')){ 請輸入電話 }</div>
           </div>
         </div>
-        <div class="quantity-controls">
-          <button (click)="updateQuantity(item.product.id, item.quantity - 1)" [disabled]="item.quantity <= 1">-</button>
-          <span class="quantity">{{ item.quantity }}</span>
-          <button (click)="updateQuantity(item.product.id, item.quantity + 1)">+</button>
-        </div>
-        <div class="item-total">
-          <span>{{ item.totalPrice | currency:'TWD':'symbol':'1.0-0' }}</span>
-          <button class="remove-btn" (click)="removeItem(item.product.id)">移除</button>
-        </div>
       </div>
-      }
-      <div class="cart-summary">
-        <div class="total">
-          <strong>總金額: {{ cartService.getTotalAmount() | currency:'TWD':'symbol':'1.0-0' }}</strong>
+      <div class="cart-section">
+        <h3>購買項目</h3>
+        <div class="cart-items">
+          @if (cartService.cartItems().length === 0) {
+          <div class="empty-cart">
+            <p>購物車是空的</p>
+          </div>
+          } @else {
+          <div class="cart-list">
+            @for (item of cartService.cartItems(); track item.product.id; let i = $index) {
+            <div class="cart-item-row">
+              <div class="item-number">{{ i + 1 }}</div>
+              <div class="product-name">{{ item.product.name }}</div>
+              <div class="quantity-input">
+                <input
+                  type="number"
+                  [value]="item.quantity"
+                  (input)="updateQuantity(item.product.id, +($any($event.target).value))"
+                  min="1"
+                  class="quantity-field"
+                />
+              </div>
+              <div class="item-subtotal">{{ item.totalPrice | currency:'TWD':'symbol':'1.0-0' }}</div>
+              <div class="remove-action">
+                <button class="remove-btn" (click)="removeItem(item.product.id)">刪除</button>
+              </div>
+            </div>
+            }
+          </div>
+          }
         </div>
-      </div>
-      }
-    </div>
-  </div>
-  <!-- 基本資料表單 -->
-  <div [formGroup]="form" class="order-form">
-    <h3>基本資料</h3>
-    <div class="basic-info">
-      <div class="form-item">
-        <div class="form-column">
-          <label>姓名</label>
-          <input type="text" formControlName="name" />
-        </div>
-        <div class="error-message">@if(name.hasError('required')){ 請輸入姓名 }</div>
-      </div>
-      <div class="form-item">
-        <div class="form-column">
-          <label>地址</label>
-          <input type="text" formControlName="address" />
-        </div>
-        <div class="error-message">@if(address.hasError('required')){ 請輸入地址 }</div>
-      </div>
-      <div class="form-item">
-        <div class="form-column">
-          <label>電話</label>
-          <input type="tel" formControlName="tel" />
-        </div>
-        <div class="error-message">@if(tel.hasError('required')){ 請輸入電話 }</div>
       </div>
     </div>
-    <div class="summit">
-      <button type="button" (click)="submitOrder()" [disabled]="form.invalid || cartService.cartItems().length === 0">送出訂單</button>
+    <div class="submit-section">
+      <button type="button" (click)="submitOrder()" [disabled]="form.invalid || cartService.cartItems().length === 0" class="submit-btn">
+        送出訂單({{ cartService.getTotalAmount() | currency:'TWD':'symbol':'1.0-0' }})
+      </button>
     </div>
   </div>
 </div>

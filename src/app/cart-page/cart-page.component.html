@@ -24,26 +24,26 @@
       <div class="cart-section">
         <h3>購買項目</h3>
         <div class="cart-items">
-          @if (cartService.cartItems().length === 0) {
+          @if (isEmpty()) {
           <div class="empty-cart">
             <p>購物車是空的</p>
           </div>
           } @else {
-          <div class="cart-list" formArrayName="cartItems">
-            @for (cartItem of cartService.cartItems(); track cartItem.product.id; let i = $index) {
-            <div class="cart-item-row" [formGroupName]="i">
+          <div class="cart-list">
+            @for (cartItem of cartItems(); track cartItem.product.id; let i = $index) {
+            <div class="cart-item-row">
               <div class="item-number">{{ i + 1 }}</div>
-              <div class="product-name">{{ getCartItemFormGroup(i).get('productName')?.value }}</div>
+              <div class="product-name">{{ cartItem.product.name }}</div>
               <div class="quantity-input">
                 <input
                   type="number"
-                  formControlName="quantity"
+                  [value]="cartItem.quantity"
                   (input)="updateQuantity(cartItem.product.id, $event)"
                   min="1"
                   class="quantity-field"
                 />
               </div>
-              <div class="item-subtotal">{{ getCartItemFormGroup(i).get('totalPrice')?.value | currency }}</div>
+              <div class="item-subtotal">{{ cartItem.totalPrice | currency }}</div>
               <div class="remove-action">
                 <button type="button" class="remove-btn" (click)="removeItem(cartItem.product.id)">刪除</button>
               </div>
@@ -56,7 +56,7 @@
     </div>
 
     <div class="submit-section">
-      <button type="button" (click)="submitOrder()" [disabled]="form.invalid || cartService.cartItems().length === 0" class="submit-btn">
+      <button type="button" (click)="submitOrder()" [disabled]="!isFormValidForSubmit()" class="submit-btn">
         送出訂單({{ totalAmount() | currency }})
       </button>
     </div>

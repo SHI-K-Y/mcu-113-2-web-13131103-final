@@ -14,40 +14,32 @@ export class CartPageComponent implements OnInit {
   private readonly router = inject(Router);
 
   readonly cartService = inject(CartService);
+
+  // 使用 computed 來優化性能
   readonly totalAmount = computed(() => {
     return this.cartService.getTotalAmount();
   });
+
+  readonly cartItems = computed(() => {
+    return this.cartService.cartItems();
+  });
+
+  readonly isEmpty = computed(() => {
+    return this.cartItems().length === 0;
+  });
+
+  readonly isFormValidForSubmit = computed(() => {
+    return this.form.valid && !this.isEmpty();
+  });
+
   form = new FormGroup({
     name: new FormControl<string | null>(null, [Validators.required]),
     address: new FormControl<string | null>(null, [Validators.required]),
     tel: new FormControl<string | null>(null, [Validators.required]),
-    cartItems: new FormArray([]),
   });
 
-  ngOnInit(): void {
-    this.initializeCartItemFormControls();
-  }
+  ngOnInit(): void {}
 
-  // 簡單的為每個購物車項目建立 FormControl
-  initializeCartItemFormControls(): void {
-    const cartItems = this.cartService.cartItems();
-
-    // 清空現有的購物車表單陣列
-    const cartItemsFormArray = this.form.get('cartItems') as FormArray;
-    cartItemsFormArray.clear();
-
-    // 為每個購物車項目建立 FormGroup 並加入 FormArray
-    cartItems.forEach((item) => {
-      const itemFormGroup = new FormGroup({
-        productId: new FormControl(item.product.id),
-        productName: new FormControl(item.product.name),
-        quantity: new FormControl(item.quantity),
-        price: new FormControl(item.product.price),
-        totalPrice: new FormControl(item.totalPrice),
-      });
-      cartItemsFormArray.push(itemFormGroup);
-    });
-  }
   get name(): FormControl<string | null> {
     return this.form.get('name') as FormControl<string | null>;
   }
@@ -59,33 +51,17 @@ export class CartPageComponent implements OnInit {
   get tel(): FormControl<string | null> {
     return this.form.get('tel') as FormControl<string | null>;
   }
+
   updateQuantity(productId: number, event: Event): void {
     const target = event.target as HTMLInputElement;
     const quantity = +target.value;
     if (quantity > 0) {
-      // 更新 cartService
       this.cartService.updateQuantity(productId, quantity);
-      // 重新載入表單資料
-      this.initializeCartItemFormControls();
     }
   }
 
   removeItem(productId: number): void {
-    // 更新 cartService
     this.cartService.removeFromCart(productId);
-    // 重新載入表單資料
-    this.initializeCartItemFormControls();
-  }
-
-  // 取得特定購物車項目的 FormGroup
-  getCartItemFormGroup(index: number): FormGroup {
-    const cartItemsFormArray = this.form.get('cartItems') as FormArray;
-    return cartItemsFormArray.at(index) as FormGroup;
-  }
-
-  // 取得購物車項目的 FormArray
-  get cartItemsFormArray(): FormArray {
-    return this.form.get('cartItems') as FormArray;
   }
 
   submitOrder(): void {

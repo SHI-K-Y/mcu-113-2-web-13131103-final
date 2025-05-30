@@ -1,5 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, inject, computed, OnInit } from '@angular/core';
+import { Component, inject, computed, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartService } from '../services/cart.service';
@@ -15,7 +15,6 @@ export class CartPageComponent implements OnInit {
 
   readonly cartService = inject(CartService);
 
-  // 使用 computed 來優化性能
   readonly totalAmount = computed(() => {
     return this.cartService.getTotalAmount();
   });
@@ -28,8 +27,10 @@ export class CartPageComponent implements OnInit {
     return this.cartItems().length === 0;
   });
 
+  private readonly formValid = signal(false);
+
   readonly isFormValidForSubmit = computed(() => {
-    return this.form.valid && !this.isEmpty();
+    return this.formValid() && !this.isEmpty();
   });
 
   form = new FormGroup({
@@ -38,7 +39,15 @@ export class CartPageComponent implements OnInit {
     tel: new FormControl<string | null>(null, [Validators.required]),
   });
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // 初始化表單狀態
+    this.formValid.set(this.form.valid);
+
+    // 監聽表單狀態變化
+    this.form.statusChanges.subscribe(() => {
+      this.formValid.set(this.form.valid);
+    });
+  }
 
   get name(): FormControl<string | null> {
     return this.form.get('name') as FormControl<string | null>;
@@ -65,21 +74,24 @@ export class CartPageComponent implements OnInit {
   }
 
   submitOrder(): void {
-    if (this.form.valid && this.cartService.cartItems().length > 0) {
-      const orderData = {
-        customerInfo: {
-          name: this.form.get('name')?.value,
-          address: this.form.get('address')?.value,
-          tel: this.form.get('tel')?.value,
-        },
-        cartItems: this.cartService.cartItems(),
-        totalAmount: this.cartService.getTotalAmount(),
-      };
-
-      alert('訂單已送出！');
-      this.cartService.clearCart();
-      this.form.reset();
-      this.router.navigate(['/']);
+    if (!this.isFormValidForSubmit()) {
+      alert('請確保所有必填欄位都已填寫且購物車不為空！');
+      return;
     }
+
+    const orderData = {
+      customerInfo: {
+        name: this.form.get('name')?.value,
+        address: this.form.get('address')?.value,
+        tel: this.form.get('tel')?.value,
+      },
+      cartItems: this.cartService.cartItems(),
+      totalAmount: this.cartService.getTotalAmount(),
+    };
+
+    alert('訂單已送出！');
+    this.cartService.clearCart();
+    this.form.reset();
+    this.router.navigate(['/']);
   }
 }

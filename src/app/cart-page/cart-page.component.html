@@ -54,7 +54,6 @@
         </div>
       </div>
     </div>
-
     <div class="submit-section">
       <button type="button" (click)="submitOrder()" [disabled]="!isFormValidForSubmit()" class="submit-btn">
         送出訂單({{ totalAmount() | currency }})

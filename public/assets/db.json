@@ -1,7 +1,7 @@
 {
   "products": [
     {
-      "id": 1,
+      "id": "1",
       "name": "A 產品",
       "authors": [
         "作者 A",
@@ -15,7 +15,7 @@
       "isShow": true
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "B 產品",
       "authors": [
         "作者 A",
@@ -29,7 +29,7 @@
       "isShow": true
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "C 產品",
       "authors": [
         "作者 A",
@@ -43,7 +43,7 @@
       "isShow": true
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "D 產品",
       "authors": [
         "作者 A",
@@ -56,7 +56,7 @@
       "isShow": true
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "E 產品",
       "authors": [
         "作者 A",
@@ -70,7 +70,7 @@
       "isShow": true
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "F 產品",
       "authors": [
         "作者 A",
@@ -84,7 +84,7 @@
       "isShow": true
     },
     {
-      "id": 7,
+      "id": "7",
       "name": "G 產品",
       "authors": [
         "作者 A",
@@ -98,7 +98,7 @@
       "isShow": true
     },
     {
-      "id": 8,
+      "id": "8",
       "name": "H 產品",
       "authors": [
         "作者 A",
@@ -110,6 +110,33 @@
       "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
       "price": 1580,
       "isShow": false
+    }
+  ],
+  "orders": [
+    {
+      "id": "bbe8",
+      "customerName": "test",
+      "customerAddress": "aa",
+      "customerPhone": "0912345678",
+      "items": [
+        {
+          "productName": "A 產品",
+          "quantity": 1,
+          "price": 1580
+        },
+        {
+          "productName": "D 產品",
+          "quantity": 2,
+          "price": 1580
+        },
+        {
+          "productName": "C 產品",
+          "quantity": 3,
+          "price": 1580
+        }
+      ],
+      "totalAmount": 9480,
+      "orderDate": "2025-05-30 20:35:18 (UTC+8)"
     }
   ]
 }

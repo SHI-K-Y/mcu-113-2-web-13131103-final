@@ -47,7 +47,6 @@ export class CartPageComponent {
   removeItem(productId: number): void {
     this.cartService.removeFromCart(productId);
   }
-
   submitOrder(): void {
     // 建立訂單資料
     const orderItems = this.cartService.cartItems().map(
@@ -59,18 +58,13 @@ export class CartPageComponent {
         })
     );
 
-    // 取得台灣時間 (UTC+8)
-    const now = new Date();
-    const taiwanTime = new Date(now.getTime() + 8 * 60 * 60 * 1000); // UTC+8
-    const formattedDate = taiwanTime.toISOString().replace('T', ' ').substring(0, 19) + ' (UTC+8)';
-
     const order = new Order({
       customerName: this.form.get('name')?.value || '',
       customerAddress: this.form.get('address')?.value || '',
       customerPhone: this.form.get('tel')?.value || '',
       items: orderItems,
       totalAmount: this.cartService.getTotalAmount(),
-      orderDate: formattedDate,
+      orderDate: new Date(),
     });
 
     // 送出訂單到資料庫

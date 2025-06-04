@@ -114,29 +114,24 @@
   ],
   "orders": [
     {
-      "id": "bbe8",
-      "customerName": "test",
-      "customerAddress": "aa",
-      "customerPhone": "0912345678",
+      "id": "b7ac",
+      "customerName": "1",
+      "customerAddress": "1",
+      "customerPhone": "1",
       "items": [
         {
-          "productName": "A 產品",
+          "productName": "C 產品",
           "quantity": 1,
           "price": 1580
         },
         {
-          "productName": "D 產品",
-          "quantity": 2,
-          "price": 1580
-        },
-        {
-          "productName": "C 產品",
-          "quantity": 3,
+          "productName": "B 產品",
+          "quantity": 1,
           "price": 1580
         }
       ],
-      "totalAmount": 9480,
-      "orderDate": "2025-05-30 20:35:18 (UTC+8)"
+      "totalAmount": 3160,
+      "orderDate": "2025-06-04T09:07:38.734Z"
     }
   ]
 }

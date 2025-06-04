@@ -5,12 +5,17 @@ export class Order {
     if (!initData) return;
     Object.assign(this, initData);
   }
-
   id?: number;
+
   customerName!: string;
+
   customerAddress!: string;
+
   customerPhone!: string;
+
   items!: OrderItem[];
+
   totalAmount!: number;
-  orderDate!: string;
+
+  orderDate!: Date;
 }

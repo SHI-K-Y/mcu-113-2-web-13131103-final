@@ -78,10 +78,6 @@ export class CartPageComponent implements OnInit {
   }
 
   submitOrder(): void {
-    if (!this.isFormValidForSubmit()) {
-      alert('請確保所有必填欄位都已填寫且購物車不為空！');
-      return;
-    }
     // 建立訂單資料
     const orderItems = this.cartService.cartItems().map(
       (cartItem) =>

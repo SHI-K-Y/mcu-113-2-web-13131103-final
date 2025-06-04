@@ -1,6 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, inject, computed, OnInit, signal } from '@angular/core';
-import { FormControl, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartService } from '../services/cart.service';
 import { OrderService } from '../services/order.service';
@@ -13,45 +13,16 @@ import { OrderItem } from '../models/order-item';
   templateUrl: './cart-page.component.html',
   styleUrl: './cart-page.component.scss',
 })
-export class CartPageComponent implements OnInit {
+export class CartPageComponent {
   private readonly router = inject(Router);
-
   readonly cartService = inject(CartService);
   private readonly orderService = inject(OrderService);
-
-  readonly totalAmount = computed(() => {
-    return this.cartService.getTotalAmount();
-  });
-
-  readonly cartItems = computed(() => {
-    return this.cartService.cartItems();
-  });
-
-  readonly isEmpty = computed(() => {
-    return this.cartItems().length === 0;
-  });
-
-  private readonly formValid = signal(false);
-
-  readonly isFormValidForSubmit = computed(() => {
-    return this.formValid() && !this.isEmpty();
-  });
 
   form = new FormGroup({
     name: new FormControl<string | null>(null, [Validators.required]),
     address: new FormControl<string | null>(null, [Validators.required]),
     tel: new FormControl<string | null>(null, [Validators.required]),
   });
-
-  ngOnInit(): void {
-    // 初始化表單狀態
-    this.formValid.set(this.form.valid);
-
-    // 監聽表單狀態變化
-    this.form.statusChanges.subscribe(() => {
-      this.formValid.set(this.form.valid);
-    });
-  }
 
   get name(): FormControl<string | null> {
     return this.form.get('name') as FormControl<string | null>;
